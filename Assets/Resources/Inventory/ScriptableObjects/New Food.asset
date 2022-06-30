@@ -16,6 +16,6 @@ MonoBehaviour:
   type: 1
   itemName: BlueFood
   icon: {fileID: 21300000, guid: 3548662e8e3003141be7d2dbb85534fb, type: 3}
-  maxInStack: 0
+  maxInStack: 2
   restoreHP: 10
   restoreStamina: 20

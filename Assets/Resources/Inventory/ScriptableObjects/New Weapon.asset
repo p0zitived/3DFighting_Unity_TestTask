@@ -16,6 +16,6 @@ MonoBehaviour:
   type: 0
   itemName: BasicWeapon
   icon: {fileID: 21300000, guid: 5dabde7d1d32b0345aa53d0ec8d6dd28, type: 3}
-  maxInStack: 0
+  maxInStack: 1
   damage: 10
   stamina: 10

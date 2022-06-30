@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,7 +48,7 @@ public class PlayerInventoryController : MonoBehaviour
         {
             if (!inv.IsEmpty())
             {
-                inv.DropItem(inv.GetSelectedSlot().item);
+                inv.DropItem(inv.GetSelectedSlotIdx());
             }
             inv.RefreshInventoryUI();
         }

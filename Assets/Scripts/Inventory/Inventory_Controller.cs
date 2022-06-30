@@ -6,6 +6,12 @@ using UnityEngine.UI;
 
 public class Inventory_Controller : MonoBehaviour
 {
+    #region Events
+    public static event Action<ItemObject> OnSelectingInventorySlot;
+    public static event Action<ItemObject> OnPickUpWhenFullInventory;
+    public static event Action<InventorySlot> OnUseSlot;
+    #endregion
+
     #region Fields
     [Header("Inventory object")]
     [SerializeField] InventoryObject inventory;
@@ -18,12 +24,7 @@ public class Inventory_Controller : MonoBehaviour
     [Header("Gizmos")]
     [SerializeField] Vector3 detecting_box_sizes;
 
-    [NonSerialized] public int selectedSlotIdx = 0;
-    #endregion
-
-    #region Events
-    public static event Action<Item> OnPickUpItem;
-    public static event Action<Item> OnDropItem;
+    private int selectedSlotIdx = -1;
     #endregion
 
     private void Start()
@@ -49,19 +50,27 @@ public class Inventory_Controller : MonoBehaviour
 
         return output;
     }
-    public void PickUpItem(Item col)
+    public void PickUpItem(Item item)
     {
-        if (IsEmpty())
+        if (!IsFull(item.item))
         {
-            inventory.AddItem(col.item, 1);
-            SelectSlot(0);
-            Destroy(col.gameObject);
+            if (IsEmpty())
+            {
+                selectedSlotIdx = -1;
+                inventory.AddItem(item.item, 1);
+                SelectSlot(0);
+                Destroy(item.gameObject);
+            }
+            else
+            {
+                inventory.AddItem(item.item, 1);
+                Destroy(item.gameObject);
+            }
+            RefreshInventoryUI();
         } else
         {
-            inventory.AddItem(col.item, 1);
-            Destroy(col.gameObject);
+            OnPickUpWhenFullInventory?.Invoke(item.item);
         }
-        RefreshInventoryUI();
     }
     public void RefreshInventoryUI()
     {
@@ -95,11 +104,25 @@ public class Inventory_Controller : MonoBehaviour
 
     public void SelectSlot(int idx)
     {
-        if (idx < inventory.container.Count)
-            selectedSlotIdx = idx;
-        else
+        if (inventory.container.Count != 0)
         {
-            selectedSlotIdx = inventory.container.Count - 1;
+            // maybe not the best place for this
+            if (idx == selectedSlotIdx)
+            {
+                OnUseSlot?.Invoke(GetSelectedSlot());
+                UseItem(selectedSlotIdx);
+            }
+
+            if (idx < inventory.container.Count)
+            {
+                selectedSlotIdx = idx;
+                OnSelectingInventorySlot?.Invoke(GetSelectedSlot().item);
+            }
+            else
+            {
+                selectedSlotIdx = inventory.container.Count - 1;
+                OnSelectingInventorySlot?.Invoke(GetSelectedSlot().item);
+            }
         }
     }
     public void DropItem(ItemObject item)
@@ -109,9 +132,27 @@ public class Inventory_Controller : MonoBehaviour
             inventory.RemoveItem(item, 1);
         }
     }
+    public void DropItem(int slotidx)
+    {
+        if (!IsEmpty())
+        {
+            inventory.RemoveItem(slotidx, 1);
+        }
+    }
+    public void UseItem(int slotidx)
+    {
+        if (!IsEmpty())
+        {
+            inventory.RemoveItem(slotidx, 1,true);
+        }
+    }
     public InventorySlot GetSelectedSlot()
     {
         return inventory.container[selectedSlotIdx];
+    }
+    public int GetSelectedSlotIdx()
+    {
+        return selectedSlotIdx;
     }
 
     public bool IsEmpty()
@@ -122,6 +163,28 @@ public class Inventory_Controller : MonoBehaviour
         }
         else
             return false;
+    }
+    public bool IsFull(ItemObject item)
+    {
+        bool result = true;
+
+        if (inventory.container.Count < inventory.maxSlots)
+        {
+            result = false;
+        }
+
+        foreach (InventorySlot slot in inventory.container)
+        {
+            if (slot.item == item)
+            {
+                if (slot.amount < slot.item.maxInStack)
+                {
+                    result = false;
+                }
+            }
+        }
+
+        return result;
     }
     public void ShowPickUp(bool enable)
     {

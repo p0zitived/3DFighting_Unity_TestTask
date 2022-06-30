@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aab7a433ea1f1df42ae4a4baa9625dbd, type: 3}
   m_Name: New Inventory
   m_EditorClassIdentifier: 
+  maxSlots: 5
+  container: []
