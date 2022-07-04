@@ -14,6 +14,7 @@ public class WeaponItem : ItemObject
 {
     public float damage;
     public float stamina;
+    public float ignoreDamageTime;
     public WeaponType weaponType;
 
     private void Awake()

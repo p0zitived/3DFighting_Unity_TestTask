@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b96478b95fa5eed448463dff6c36cfa1, type: 3}
+  m_Name: Spear
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1821490927000328910, guid: 696cf44e3d7522c48a037d19400c3c43, type: 3}
+  type: 0
+  itemName: Spear
+  icon: {fileID: 21300000, guid: fc0be8d7cf8018345a1c16a7428283af, type: 3}
+  maxInStack: 1
+  damage: 10
+  stamina: 30
+  ignoreDamageTime: 0.25
+  weaponType: 2

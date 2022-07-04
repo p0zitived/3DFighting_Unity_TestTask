@@ -43,6 +43,34 @@ public class InventoryObject : ScriptableObject
 
         OnAddItem?.Invoke(_item);
     }
+    public void AddWithoutEvent(ItemObject _item, int _count)
+    {
+        bool hasItem = false;
+
+        foreach (InventorySlot slot in container)
+        {
+            if (slot.item == _item && slot.item.maxInStack != slot.amount)
+            {
+                hasItem = true;
+                // max in stack condition
+                if (slot.amount + _count <= slot.item.maxInStack)
+                {
+                    slot.AddAmount(_count);
+                }
+                else
+                {
+                    slot.AddAmount(slot.item.maxInStack - slot.amount);
+                    AddSlot(_item, _count - (slot.item.maxInStack - slot.amount));
+                }
+                break;
+            }
+        }
+
+        if (!hasItem)
+        {
+            AddSlot(_item, _count);
+        }
+    }
     public void RemoveItem(ItemObject _item,int _count)
     {
         foreach (InventorySlot slot in container)

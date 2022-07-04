@@ -1,12 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class Global : MonoBehaviour
 {
     // Using in : PlayerMoveController
     public static Vector3 PlayerDir { get; set; }
     public static bool CanMove { get; set; }
+    public static int enemyKilled = 0;
+
+    [Header("UI")]
+    [SerializeField] Image blackDisplay;
 
     [Header("Fixed fps :")]
     [SerializeField] bool enable;
@@ -14,11 +18,20 @@ public class Global : MonoBehaviour
 
     private void Start()
     {
-        CanMove = true;
+        blackDisplay.rectTransform.DOLocalMoveY(1000, 3).OnComplete(() => {
+            blackDisplay.transform.GetChild(0).gameObject.SetActive(true);
+        });
 
+        EnemyController.OnEnemyKill += OnEnemyKill;
+
+        CanMove = true;
         SetFixedFps(enable, target_fps);
     }
 
+    private void OnEnemyKill()
+    {
+        enemyKilled++;
+    }
     private void SetFixedFps(bool enable,int targetFps)
     {
         if (enable)

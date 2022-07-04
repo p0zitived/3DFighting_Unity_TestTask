@@ -11,14 +11,27 @@ public class PlayerStats : MonoBehaviour
 
     [SerializeField] float maxHp;
     [SerializeField] float maxStamina;
+    [SerializeField] Inventory_Controller inv;
     [SerializeField] Transform itemSpawner;
+
+    [Header("Regeneration")]
+    [SerializeField] float hp_regeneration;
+    [SerializeField] float stamina_regeneration;
+    [SerializeField] float sprintCost;
+    private bool sprinting = false;
+    private bool staminaRegen = false;
+    private bool hpRegen = false;
 
     private float acctualHp;
     private float acctualStamina;
     private float acctualShieldState;
 
-    private WeaponItem weapon;
-    private ShieldItem shield;
+    // shield
+    private bool shieldActivated = false;
+    private float shieldProtection = 0.5f;
+    private float shieldStaminaBurning;
+
+    public WeaponItem weapon;
 
     private void Start()
     {
@@ -26,14 +39,41 @@ public class PlayerStats : MonoBehaviour
 
         acctualHp = maxHp;
         acctualStamina = maxStamina;
-        if (shield != null)
-            acctualShieldState = shield.damageAbsorption;
+
+        PlayerMoveController.OnStartSprinting += OnSprintStart;
+        PlayerMoveController.OnEndSprinting += OnSprintEnd;
+        PlayerShield.OnShieldActivate += OnShieldOn;
+        PlayerShield.OnShieldDesactivate += OnShieldOff;
+    }
+
+    private void Update()
+    {
+        if (sprinting)
+        {
+            staminaRegen = false;
+            BurnStamina(sprintCost * Time.deltaTime);
+        }
+        if (shieldActivated)
+        {
+            staminaRegen = false;
+            BurnStamina(shieldStaminaBurning * Time.deltaTime);
+        }
+        if (!sprinting && !shieldActivated)
+        {
+            staminaRegen = true;
+        }
+
+        if (staminaRegen)
+        {
+            HealStamina(stamina_regeneration * Time.deltaTime);
+        }
     }
 
     public void Heal(float value)
     {
         if (value >= 0)
         {
+            Debug.Log(acctualHp);
             acctualHp += value;
             if (acctualHp > maxHp)
                 acctualHp = maxHp;
@@ -41,12 +81,28 @@ public class PlayerStats : MonoBehaviour
     }
     public void SetDamage(float value)
     {
-        if (value >= 0)
+        if (!shieldActivated)
         {
-            acctualHp -= value;
-            if (acctualHp < 0)
+            if (value >= 0)
             {
-                OnPlayerDeath?.Invoke();
+                acctualHp -= value;
+                if (acctualHp <= 0)
+                {
+                    acctualHp = 0;
+                    OnPlayerDeath?.Invoke();
+                }
+            }
+        }
+        else
+        {
+            if (value >= 0)
+            {
+                acctualHp -= value*(1-shieldProtection);
+                if (acctualHp <= 0)
+                {
+                    acctualHp = 0;
+                    OnPlayerDeath?.Invoke();
+                }
             }
         }
     }
@@ -65,23 +121,49 @@ public class PlayerStats : MonoBehaviour
     {
         if (value >= 0)
         {
-            acctualStamina -= value;
-            if (acctualStamina < 0)
+            acctualStamina += value;
+            if (acctualStamina > maxStamina)
             {
-                acctualStamina = 0;
+                acctualStamina = maxStamina;
             }
         }
     }
-    public void SetShieldDamage(float value)
+    public WeaponItem GetPlayerWeapon()
     {
-        if (shield != null)
-        {
-            acctualShieldState -= value;
-            if (acctualShieldState < 0)
-            {
-                acctualShieldState = 0;
-            }
-        }
+        return weapon;
+    }
+
+    public float GetHealth()
+    {
+        return acctualHp;
+    }
+    public float GetStamina()
+    {
+        return acctualStamina;
+    }
+    public float GetMaxHP()
+    {
+        return maxHp;
+    }
+    public float GetMaxStamina()
+    {
+        return maxStamina;
+    }
+
+    // shield
+    public void SetShieldProtection(float value)
+    {
+        if (value >= 0 && value <= 1)
+            shieldProtection = value;
+    }
+    public void ActivateShield(bool input)
+    {
+        shieldActivated = input;
+    }
+    public void SetShieldStaminaBurning(float value)
+    {
+        if (value >= 0)
+            shieldStaminaBurning = value;
     }
 
     private void OnUseSlot(InventorySlot slot)
@@ -99,19 +181,34 @@ public class PlayerStats : MonoBehaviour
                 weapon = slot.item as WeaponItem;
             } else
             {
-                DropItem(weapon);
+                RestoreUsedEquipmentInInventory(weapon);
                 weapon = slot.item as WeaponItem;
             }
         }
-        if (slot.item.type == ItemType.shield)
+    }
+    private void RestoreUsedEquipmentInInventory(ItemObject item)
+    {
+        if (item.type == ItemType.weapon)
         {
-            shield = slot.item as ShieldItem;
-            acctualShieldState = shield.damageAbsorption;
+            inv.RestoreToInventory(weapon);
         }
     }
-    private void DropItem(ItemObject item)
+
+    // event handlers
+    private void OnSprintStart()
     {
-        GameObject obj = Instantiate(item.prefab);
-        obj.transform.position = itemSpawner.position;
+        sprinting = true;
+    }
+    private void OnSprintEnd()
+    {
+        sprinting = false;
+    }
+    private void OnShieldOn()
+    {
+        shieldActivated = true;
+    }
+    private void OnShieldOff()
+    {
+        shieldActivated = false;
     }
 }

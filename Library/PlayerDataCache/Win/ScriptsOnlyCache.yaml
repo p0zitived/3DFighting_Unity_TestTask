@@ -1,6 +1,12 @@
 ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
+    - DamageNumbers
+    - Enemy
+    - EnemyAnimationController
+    - EnemyController
+    - EnemySpawner
+    - EnemyWeapon
     - FoodItem
     - Global
     - InventoryObject
@@ -11,26 +17,28 @@ ScriptsOnlyBuild:
     - PlayerCamera
     - PlayerInventoryController
     - PlayerMoveController
+    - PlayerShield
     - PlayerStats
-    - ShieldItem
+    - PlayerUI_Controller
+    - WeaponAttack
     - WeaponItem
     Cinemachine.dll:
     - Cinemachine.CinemachineBrain
+    - Cinemachine.CinemachineCollider
     - Cinemachine.CinemachineComposer
     - Cinemachine.CinemachineFreeLook
     - Cinemachine.CinemachineOrbitalTransposer
     - Cinemachine.CinemachinePipeline
     - Cinemachine.CinemachineVirtualCamera
+    DOTween.dll:
+    - DG.Tweening.Core.DOTweenSettings
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.Graphs.dll:
     - UnityEditor.Graphs.AnimationBlendTree.Graph
     - UnityEditor.Graphs.AnimationBlendTree.GraphGUI
-    - UnityEditor.Graphs.AnimationBlendTree.Node
-    - UnityEditor.Graphs.AnimationStateMachine.AnyStateNode
     - UnityEditor.Graphs.AnimationStateMachine.Graph
     - UnityEditor.Graphs.AnimationStateMachine.GraphGUI
-    - UnityEditor.Graphs.AnimationStateMachine.StateNode
     - UnityEditor.Graphs.AnimatorControllerTool
     UnityEditor.TestRunner.dll:
     - UnityEditor.TestTools.TestRunner.Api.CallbacksHolder
@@ -39,6 +47,7 @@ ScriptsOnlyBuild:
     UnityEngine.UI.dll:
     - UnityEngine.EventSystems.EventSystem
     - UnityEngine.EventSystems.StandaloneInputModule
+    - UnityEngine.UI.Button
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.GridLayoutGroup
@@ -66,8 +75,6 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 54
       Script: {instanceID: 0}
-    - Class: 64
-      Script: {instanceID: 0}
     - Class: 65
       Script: {instanceID: 0}
     - Class: 74
@@ -75,6 +82,8 @@ ScriptsOnlyBuild:
     - Class: 81
       Script: {instanceID: 0}
     - Class: 89
+      Script: {instanceID: 0}
+    - Class: 90
       Script: {instanceID: 0}
     - Class: 91
       Script: {instanceID: 0}
@@ -85,57 +94,79 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1424}
+      Script: {instanceID: 1428}
     - Class: 114
-      Script: {instanceID: 1726}
+      Script: {instanceID: 1430}
     - Class: 114
-      Script: {instanceID: 1824}
+      Script: {instanceID: 1680}
     - Class: 114
-      Script: {instanceID: 1830}
+      Script: {instanceID: 1736}
     - Class: 114
-      Script: {instanceID: 1996}
+      Script: {instanceID: 1796}
     - Class: 114
-      Script: {instanceID: 2042}
+      Script: {instanceID: 1840}
     - Class: 114
-      Script: {instanceID: 2246}
+      Script: {instanceID: 1846}
     - Class: 114
-      Script: {instanceID: 2312}
+      Script: {instanceID: 2012}
     - Class: 114
-      Script: {instanceID: 2562}
+      Script: {instanceID: 2058}
     - Class: 114
-      Script: {instanceID: 2640}
+      Script: {instanceID: 2146}
     - Class: 114
-      Script: {instanceID: 2726}
+      Script: {instanceID: 2154}
     - Class: 114
-      Script: {instanceID: 2788}
+      Script: {instanceID: 2264}
     - Class: 114
-      Script: {instanceID: 2884}
+      Script: {instanceID: 2302}
     - Class: 114
-      Script: {instanceID: 2998}
+      Script: {instanceID: 2584}
     - Class: 114
-      Script: {instanceID: 3106}
+      Script: {instanceID: 2666}
     - Class: 114
-      Script: {instanceID: 3114}
+      Script: {instanceID: 2674}
     - Class: 114
-      Script: {instanceID: 3258}
+      Script: {instanceID: 2762}
     - Class: 114
-      Script: {instanceID: 3380}
+      Script: {instanceID: 2824}
     - Class: 114
-      Script: {instanceID: 3644}
+      Script: {instanceID: 2922}
     - Class: 114
-      Script: {instanceID: 3650}
+      Script: {instanceID: 2946}
     - Class: 114
-      Script: {instanceID: 3652}
+      Script: {instanceID: 3028}
     - Class: 114
-      Script: {instanceID: 3794}
+      Script: {instanceID: 3040}
     - Class: 114
-      Script: {instanceID: 3814}
+      Script: {instanceID: 3048}
     - Class: 114
-      Script: {instanceID: 22378}
+      Script: {instanceID: 3092}
     - Class: 114
-      Script: {instanceID: 23856}
+      Script: {instanceID: 3154}
     - Class: 114
-      Script: {instanceID: 23868}
+      Script: {instanceID: 3162}
+    - Class: 114
+      Script: {instanceID: 3194}
+    - Class: 114
+      Script: {instanceID: 3308}
+    - Class: 114
+      Script: {instanceID: 3430}
+    - Class: 114
+      Script: {instanceID: 3696}
+    - Class: 114
+      Script: {instanceID: 3702}
+    - Class: 114
+      Script: {instanceID: 3704}
+    - Class: 114
+      Script: {instanceID: 3824}
+    - Class: 114
+      Script: {instanceID: 3846}
+    - Class: 114
+      Script: {instanceID: 3866}
+    - Class: 114
+      Script: {instanceID: 3962}
+    - Class: 114
+      Script: {instanceID: 4006}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -148,6 +179,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 157
       Script: {instanceID: 0}
+    - Class: 195
+      Script: {instanceID: 0}
     - Class: 196
       Script: {instanceID: 0}
     - Class: 213
@@ -158,9 +191,17 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 224
       Script: {instanceID: 0}
+    - Class: 238
+      Script: {instanceID: 0}
     - Class: 319
       Script: {instanceID: 0}
   scriptHashData:
+  - hash:
+      serializedVersion: 2
+      Hash: 699619b86d9359741a4f58540298c80b
+    assemblyName: UnityEngine.UI.dll
+    namespaceName: UnityEngine.UI
+    className: Text
   - hash:
       serializedVersion: 2
       Hash: a6e561615949734e9f12f9b61661f43e
@@ -235,6 +276,12 @@ ScriptsOnlyBuild:
     className: CinemachineExternalCamera
   - hash:
       serializedVersion: 2
+      Hash: 7682a5de8edb5a4aa2aa029e6ef24516
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemyAnimationController
+  - hash:
+      serializedVersion: 2
       Hash: 0dbc3be398b4869a5c8d0d8481ee402c
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.UI
@@ -287,6 +334,18 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.TestRunner.dll
     namespaceName: UnityEngine.TestTools.TestRunner.Callbacks
     className: PlayerQuitHandler
+  - hash:
+      serializedVersion: 2
+      Hash: 704dcd31abc789439bc3f3cd10b58c2b
+    assemblyName: DOTween.dll
+    namespaceName: DG.Tweening.Core
+    className: DOTweenComponent
+  - hash:
+      serializedVersion: 2
+      Hash: 9b2663563359a91d0a6867fee160c936
+    assemblyName: DOTween.dll
+    namespaceName: DG.Tweening.Core
+    className: DOTweenSettings
   - hash:
       serializedVersion: 2
       Hash: caa533b001ae39b864ba8425019e2268
@@ -385,7 +444,7 @@ ScriptsOnlyBuild:
     className: AudioPlayableAsset
   - hash:
       serializedVersion: 2
-      Hash: c772290c39074e82fed8d6a5676a6016
+      Hash: a9dc2c8969d04d56f4260423a74fcbb0
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Global
@@ -413,6 +472,12 @@ ScriptsOnlyBuild:
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: EventTrigger
+  - hash:
+      serializedVersion: 2
+      Hash: 394441537a5d4b3e5c8ab9f6faa56626
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemyController
   - hash:
       serializedVersion: 2
       Hash: eeb356fa33eec10332ebc7e468fecb95
@@ -451,7 +516,7 @@ ScriptsOnlyBuild:
     className: ActivationTrack
   - hash:
       serializedVersion: 2
-      Hash: 57b59bcdbf1493c11ef9c723efb0984e
+      Hash: c4e486b31357955f5b7183cf23f3f323
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: PlayerMoveController
@@ -463,16 +528,16 @@ ScriptsOnlyBuild:
     className: CinemachineIndependentImpulseListener
   - hash:
       serializedVersion: 2
+      Hash: 9a32f6c4fff6779f4ba4d289220925cd
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: WeaponAttack
+  - hash:
+      serializedVersion: 2
       Hash: d791aa6007fa3640be1164ea75bb087d
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TMP_StyleSheet
-  - hash:
-      serializedVersion: 2
-      Hash: 699619b86d9359741a4f58540298c80b
-    assemblyName: UnityEngine.UI.dll
-    namespaceName: UnityEngine.UI
-    className: Text
   - hash:
       serializedVersion: 2
       Hash: c3d3430df9e3ea95e3e3d587961390fb
@@ -527,6 +592,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: ControlTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 15de940ad9ef30e306b6125c202f3d94
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerStats
   - hash:
       serializedVersion: 2
       Hash: cc66548f149dd62df2170f7b08acf0ee
@@ -637,6 +708,12 @@ ScriptsOnlyBuild:
     className: CinemachineVirtualCamera
   - hash:
       serializedVersion: 2
+      Hash: 5b91e891abea08e7d33ecdfee8c44d7f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerAttack
+  - hash:
+      serializedVersion: 2
       Hash: dbfb4270852b0008a423a7418d9de4cf
     assemblyName: Cinemachine.dll
     namespaceName: Cinemachine
@@ -655,10 +732,22 @@ ScriptsOnlyBuild:
     className: AspectRatioFitter
   - hash:
       serializedVersion: 2
+      Hash: d8e9e7a4c05f785419f1289de2af1a6d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemySpawner
+  - hash:
+      serializedVersion: 2
       Hash: cc4274b586df3c02688bac01b88bd16c
     assemblyName: UnityEngine.UI.dll
     namespaceName: UnityEngine.EventSystems
     className: EventSystem
+  - hash:
+      serializedVersion: 2
+      Hash: bad62dd988b861fe27bc6c54ef19b43a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerUI_Controller
   - hash:
       serializedVersion: 2
       Hash: fe64a45214940b510a0ec79c96d43498
@@ -677,6 +766,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: AudioTrack
+  - hash:
+      serializedVersion: 2
+      Hash: 110ffe7d66ccceee2f304b32e1b42498
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: Enemy
   - hash:
       serializedVersion: 2
       Hash: a74405a4829a834d107a0c6e072719ed
@@ -713,6 +808,12 @@ ScriptsOnlyBuild:
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: FoodItem
+  - hash:
+      serializedVersion: 2
+      Hash: 533b77c6a4cf4b395967bbd7c16d687d
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: EnemyWeapon
   - hash:
       serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
@@ -775,7 +876,7 @@ ScriptsOnlyBuild:
     className: TMP_SpriteAnimator
   - hash:
       serializedVersion: 2
-      Hash: 34631ea69591251febbe89d7bf51d813
+      Hash: aecf42b55a97e73bdfa09b3f133c105a
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: WeaponItem
@@ -937,28 +1038,28 @@ ScriptsOnlyBuild:
     className: CinemachineBlendListCamera
   - hash:
       serializedVersion: 2
+      Hash: a48bb485641be24c5e1a88f29d7feb4a
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: PlayerShield
+  - hash:
+      serializedVersion: 2
       Hash: 4fd8bf02e3089425d3502e26c44ba31a
     assemblyName: Unity.TextMeshPro.dll
     namespaceName: TMPro
     className: TextContainer
   - hash:
       serializedVersion: 2
+      Hash: b258d31a1e5cf8d81b865ab2d47385bf
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: DamageNumbers
+  - hash:
+      serializedVersion: 2
       Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
-    className: PlayerAttack
-  - hash:
-      serializedVersion: 2
-      Hash: 63f7331708f836ae2770536fc6b9598f
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: PlayerStats
-  - hash:
-      serializedVersion: 2
-      Hash: 2300755e63caa0e8fcfaf006d21b55aa
-    assemblyName: Assembly-CSharp.dll
-    namespaceName: 
-    className: ShieldItem
+    className: SoundController
   platform: 5
   scenePathNames:
   - Assets/Scenes/MainScene.unity

@@ -11,7 +11,6 @@ public class PlayerAnimation : MonoBehaviour
 
     private void Start()
     {
-        InventoryObject.OnAddItem += OnPickUp;
         InventoryObject.OnRemoveItem += OnDropItem;
     }
 
@@ -27,11 +26,6 @@ public class PlayerAnimation : MonoBehaviour
         playerAnimator.SetFloat("DirZ", moveCtrl.GetSmoothDirection().z);
     }
 
-    private void OnPickUp(ItemObject item)
-    {
-        playerAnimator.SetBool("PickUp", true);
-        StartCoroutine(WaitAndReset(0.1f));
-    }
     private IEnumerator WaitAndReset(float time)
     {
         yield return new WaitForSeconds(time);

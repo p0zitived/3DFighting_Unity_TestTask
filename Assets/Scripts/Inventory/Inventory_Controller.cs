@@ -72,6 +72,20 @@ public class Inventory_Controller : MonoBehaviour
             OnPickUpWhenFullInventory?.Invoke(item.item);
         }
     }
+    public void RestoreToInventory(ItemObject item)
+    {
+        if (IsEmpty())
+        {
+            selectedSlotIdx = -1;
+            inventory.AddWithoutEvent(item, 1);
+            SelectSlot(0);
+        }
+        else
+        {
+            inventory.AddWithoutEvent(item, 1);
+        }
+        RefreshInventoryUI();
+    }
     public void RefreshInventoryUI()
     {
         // clear UI

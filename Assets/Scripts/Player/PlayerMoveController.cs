@@ -10,6 +10,8 @@ public class PlayerMoveController : MonoBehaviour
     [SerializeField] float speed;
     [SerializeField] float smoothSpeed;
     [SerializeField] PlayerCamera camCotroller;
+    [SerializeField] PlayerStats stats;
+    [SerializeField] float minStaminaForSprint;
 
     [Header("Gravity")]
     [SerializeField] float gravity = -1;
@@ -21,6 +23,11 @@ public class PlayerMoveController : MonoBehaviour
     [Header("Rotation")]
     [SerializeField] float rotationSpeed;
 
+    public static event Action OnStartSprinting;
+    public static event Action OnEndSprinting;
+    public static event Action OnSprintCoolDown;
+    public static event Action OnSprintCoolDownEnd;
+
     private Vector3 move;
     private Vector3 direction;
     private Vector3 relative_direction;
@@ -29,18 +36,44 @@ public class PlayerMoveController : MonoBehaviour
     private Vector3 smoothInputVelocity;
     private Vector3 smoothInputVelocity2 = Vector3.zero;
 
+    private bool sprinting = false;
+    private bool SprintCoolDown = false;
+    private float aux_rotationSpeed;
+
+    private bool canMove = true;
+
+    private void Start()
+    {
+        PlayerAttack.OnPlayerStartAttack += OnPlayerStartAttack;
+        PlayerAttack.OnPlayerEndAttack += OnPlayerEndAttack;
+
+        aux_rotationSpeed = rotationSpeed;
+
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
     private void Update()
     {
-        if (CanMove())
+        if (canMove)
         {
             SetDirection();
-            //RotateInDirection(relative_direction); if u want to rotate in all directions
             RotateToForward();
             SetMove();
-            current_direction = Vector3.SmoothDamp(current_direction, relative_direction, ref smoothInputVelocity,smoothSpeed);
+            CheckIfSprint();
+            current_direction = Vector3.SmoothDamp(current_direction, relative_direction, ref smoothInputVelocity, smoothSpeed);
             characterController.Move(move);
 
             smooth_direction = Vector3.SmoothDamp(smooth_direction, direction, ref smoothInputVelocity2, smoothSpeed);
+        }
+        else
+        {
+            OnEndSprinting?.Invoke();
+            sprinting = false;
+            rotationSpeed = aux_rotationSpeed;
+
+            current_direction = Vector3.zero;
+            smooth_direction = Vector3.zero;
+            GravityCalc();
         }
     }
 
@@ -125,6 +158,56 @@ public class PlayerMoveController : MonoBehaviour
             move.y += gravity * Time.deltaTime;
         }
     }
+    private void CheckIfSprint()
+    {
+        if (SprintCoolDown)
+        {
+            if (stats.GetStamina() >= minStaminaForSprint)
+            {
+                SprintCoolDown = false;
+                OnSprintCoolDownEnd?.Invoke();
+            }
+        }
+
+        if (stats.GetStamina() != 0 && !SprintCoolDown)
+        {
+            if (direction != Vector3.zero)
+            {
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    if (!sprinting)
+                    {
+                        rotationSpeed *= 2;
+                        sprinting = true;
+                    }
+                    direction *= 2;
+                    relative_direction *= 2;
+                    OnStartSprinting?.Invoke();
+                }
+
+                if (Input.GetKeyUp(KeyCode.LeftShift))
+                {
+                    rotationSpeed /= 2;
+                    sprinting = false;
+                    OnEndSprinting?.Invoke();
+                }
+            }
+            else
+            {
+                if (sprinting)
+                {
+                    sprinting = false;
+                    rotationSpeed /= 2;
+                    OnEndSprinting?.Invoke();
+                }
+            }
+        } else
+        {
+            SprintCoolDown = true;
+            OnSprintCoolDown?.Invoke();
+            OnEndSprinting?.Invoke();
+        }
+    }
 
     public Vector3 GetMove()
     {
@@ -135,14 +218,13 @@ public class PlayerMoveController : MonoBehaviour
         return smooth_direction;
     }
     // move condition
-    private bool CanMove()
+    private void OnPlayerStartAttack(WeaponItem weapon)
     {
-        if (Global.CanMove)
-        {
-            return true;
-        }
-        else
-            return false;
+        canMove = false;
+    }
+    private void OnPlayerEndAttack()
+    {
+        canMove = true;
     }
     private void OnDrawGizmos()
     {
