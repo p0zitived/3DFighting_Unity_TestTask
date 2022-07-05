@@ -28,6 +28,12 @@ public class Global : MonoBehaviour
         SetFixedFps(enable, target_fps);
     }
 
+    private void OnDestroy()
+    {
+        EnemyController.OnEnemyKill -= OnEnemyKill;
+        enemyKilled = 0;
+    }
+
     private void OnEnemyKill()
     {
         enemyKilled++;

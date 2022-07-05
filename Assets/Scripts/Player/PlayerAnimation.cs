@@ -14,6 +14,11 @@ public class PlayerAnimation : MonoBehaviour
         InventoryObject.OnRemoveItem += OnDropItem;
     }
 
+    private void OnDestroy()
+    {
+        InventoryObject.OnRemoveItem -= OnDropItem;
+    }
+
     private void Update()
     {
         SetAnimatorDir();

@@ -52,6 +52,12 @@ public class PlayerMoveController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
+    private void OnDestroy()
+    {
+        PlayerAttack.OnPlayerStartAttack -= OnPlayerStartAttack;
+        PlayerAttack.OnPlayerEndAttack -= OnPlayerEndAttack;
+    }
+
     private void Update()
     {
         if (canMove)

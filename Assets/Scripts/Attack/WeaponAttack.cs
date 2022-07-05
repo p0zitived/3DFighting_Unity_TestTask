@@ -21,6 +21,12 @@ public class WeaponAttack : MonoBehaviour
         PlayerAttack.OnPlayerEndAttack += OnPlayerStopAttacking;
     }
 
+    private void OnDestroy()
+    {
+        PlayerAttack.OnPlayerStartAttack -= OnPlayerStartAttacking;
+        PlayerAttack.OnPlayerEndAttack -= OnPlayerStopAttacking;
+    }
+
     private void Update()
     {
         if (Enabled)

@@ -27,6 +27,11 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        Inventory_Controller.OnUseSlot -= OnUseSlot;
+    }
+
     private void Update()
     {
         Animation();

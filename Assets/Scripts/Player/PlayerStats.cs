@@ -46,6 +46,16 @@ public class PlayerStats : MonoBehaviour
         PlayerShield.OnShieldDesactivate += OnShieldOff;
     }
 
+    private void OnDestroy()
+    {
+        Inventory_Controller.OnUseSlot -= OnUseSlot;
+
+        PlayerMoveController.OnStartSprinting -= OnSprintStart;
+        PlayerMoveController.OnEndSprinting -= OnSprintEnd;
+        PlayerShield.OnShieldActivate -= OnShieldOn;
+        PlayerShield.OnShieldDesactivate -= OnShieldOff;
+    }
+
     private void Update()
     {
         if (sprinting)

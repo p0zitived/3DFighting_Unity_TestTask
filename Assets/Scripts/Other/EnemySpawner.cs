@@ -13,6 +13,11 @@ public class EnemySpawner : MonoBehaviour
         EnemyController.OnEnemyKill += SpawnEnemy;
     }
 
+    private void OnDestroy()
+    {
+        EnemyController.OnEnemyKill -= SpawnEnemy;
+    }
+
     private void SpawnEnemy()
     {
         GameObject aux;

@@ -32,6 +32,12 @@ public class Inventory_Controller : MonoBehaviour
         InventoryObject.OnSlotDeleting += OnSlotDeleting;
     }
 
+    private void OnDestroy()
+    {
+        InventoryObject.OnSlotDeleting -= OnSlotDeleting;
+        inventory.container.Clear();
+    }
+
     public List<Item> CheckForItems()
     {
         List<Item> output = new List<Item>();

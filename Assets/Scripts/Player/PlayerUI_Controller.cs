@@ -29,6 +29,14 @@ public class PlayerUI_Controller : MonoBehaviour
         PlayerStats.OnPlayerDeath += OnDeath;
     }
 
+    private void OnDestroy()
+    {
+        PlayerMoveController.OnSprintCoolDown -= OnSprintCoolDown;
+        PlayerMoveController.OnSprintCoolDownEnd -= OnSprintCoolDownEnd;
+        Inventory_Controller.OnUseSlot -= SpawnHealNumbers;
+        PlayerStats.OnPlayerDeath -= OnDeath;
+    }
+
     private void Update()
     {
         health.fillAmount = stats.GetHealth()/stats.GetMaxHP();
@@ -80,6 +88,7 @@ public class PlayerUI_Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         machine.m_YAxis.m_MaxSpeed = 0;
         machine.m_XAxis.m_MaxSpeed = 0;
+        AudioListener.volume = 0;
 
         if (!setedScore)
         {

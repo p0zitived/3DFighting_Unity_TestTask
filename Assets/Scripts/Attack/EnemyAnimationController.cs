@@ -40,6 +40,12 @@ public class EnemyAnimationController : MonoBehaviour
         controller.OnDeath += DeathAnimation;
     }
 
+    private void OnDestroy()
+    {
+        EnemyController.OnHitedEnemy -= OnEnemyHit;
+        controller.OnDeath -= DeathAnimation;
+    }
+
     private void Update()
     {
         if (!isDead)
